@@ -4,4 +4,5 @@
 % some stylistic stuff
 \newcommand{\heading}[1]{
 \centering{\bf \large #1}
+
 }
