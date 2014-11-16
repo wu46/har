@@ -1,0 +1,118 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{amsmath}
+\DeclareMathOperator{\argmax}{arg\,max}
+\usepackage{multicol}
+\usepackage[margin=1in]{geometry}
+
+
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+% Do not put math or special symbols in the title.
+\title{Classification of human posture and movement}
+
+\author{
+  Huafei~Wang,
+Jennifer~Wu}
+% make the title area
+\maketitle
+
+\begin{abstract}
+  Coming soon\ldots
+\end{abstract}
+\section{Introduction}
+Human activity classification has wide reaching applications,
+such as in providing medical assistance to disabled or elderly persons.
+This project implements several machine learning algorithms to 
+classify human posture and movements. The different activities being classified are:
+\begin{itemize}
+  \item Sitting
+  \item Sitting down
+  \item Standing
+  \item Standing up
+  \item Walking
+\end{itemize}
+
+The difference between ``Sitting'' and ``Sitting down'' is that the former
+is the static posture, whereas the latter is the transitional movement
+from standing to sitting.
+% You must have at least 2 lines in the paragraph with the drop letter
+% (should never be an issue)
+\subsection{Past work}
+Coming soon\dots
+\section{Data}
+\subsection{Source}
+The data is made publicly available on UCI's Machine Learning Repository.
+It can be accessed at: 
+http://groupware.les.inf.puc-rio.br/har\#dataset.
+
+\subsection{Description}
+The dataset contains the following features
+\begin{itemize}
+  \item Age
+  \item Weight
+  \item Body Mass Index
+  \item Height
+  \item x,y,z axis readings from 4 different accelerometers
+\end{itemize}
+
+\begin{table}[!h]
+  \centering
+  \caption{Frequency of each class}
+  \begin{tabular}[]{|l|c|} \hline
+    \bf {Class} & \bf {Frequency} \\ \hline
+    Sitting & 50631 \\ \hline
+    Sitting down & 11827 \\ \hline
+    Standing & 47370 \\ \hline
+    Standing up & 12415 \\ \hline
+    Walking & 43390 \\ \hline
+  \end{tabular}
+\end{table}
+
+
+\section{Features}
+The features used in our models are the $12$ accelerometer readings. 
+
+\section{Gaussian Discriminant Analysis}
+\subsection{Binary classification}
+The first model implemented was the GDA model. For each class,
+$90\%$ of the class's data is used as positive training examples,
+while $90\%$ from each of the other classes are concatenated 
+to be used as negative training examples.
+\subsection{Multi-class classification}
+For a testing example, in order to make a prediction into 
+$1$ of the $5$ classes, the posterior distribution is calculated for
+each class, and the predicted label is chosen depending on the largest
+posterior.
+
+That is
+\begin{equation*}
+  h_\theta(x) = \argmax_y p(x|y)p(y)
+\end{equation*} where $y \in \lbrace 1,2,3,4,5 \rbrace$.
+
+\subsection{Results}
+The confusion matrix of the results is shown below:
+
+\begin{table}[!h]
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}[<+position+>]{l|c|c|c|c|c}
+  %\backslashbox{Actual}{Predicted}
+    & Sitting & Sitting down & Standing & Standing up & Walking \\ \hline
+    Sitting & 3916 & 1126 & 0 & 22 & 0 \\
+    Sitting down & 0 & 1112 & 63 & 7 & 2 \\
+    Standing & 0 & 601 & 4136 & 0 & 1 \\
+    Standing up & 116 & 558 & 454 & 103 & 11 \\
+    Walking & 0 & 1257 & 900 & 48 & 2135
+  \end{tabular}
+\end{table}
+
+
+
+%\section{Softmax Regression}
+%\subsection{}
+%\subsection{Results}
+
+\end{document}
+
+
