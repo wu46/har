@@ -25,7 +25,7 @@ Jennifer~Wu}
 Human activity classification has wide reaching applications,
 such as in providing medical assistance to disabled or elderly persons.
 This project implements several machine learning algorithms to 
-classify human posture and movements. The different activities being classified are:
+classify human posture and movements. The different activities being classified are: 
 \begin{itemize}
   \item Sitting
   \item Sitting down
@@ -33,7 +33,6 @@ classify human posture and movements. The different activities being classified 
   \item Standing up
   \item Walking
 \end{itemize}
-
 The difference between ``Sitting'' and ``Sitting down'' is that the former
 is the static posture, whereas the latter is the transitional movement
 from standing to sitting.
@@ -70,10 +69,11 @@ The dataset contains the following features
   \end{tabular}
 \end{table}
 
-
+% ============================= Features =====================================
 \section{Features}
-The features used in our models are the $12$ accelerometer readings. 
+The features used in our models are the $12$ accelerometer readings. Although the original data also contains age, weight, body mass index and height, they are neglected in this preliminary analysis and classification because they are less relevant in determining human movement compared with the $12$ accelerometer readings.
 
+% ================================ GDA =======================================
 \section{Gaussian Discriminant Analysis}
 \subsection{Binary classification}
 The first model implemented was the GDA model. For each class,
@@ -112,6 +112,46 @@ The confusion matrix of the results is shown below:
 %\section{Softmax Regression}
 %\subsection{}
 %\subsection{Results}
+
+% ===================================k-means ==================================
+\section{k-means}
+\subsection{Training}
+The second model implemented is k-means. Although k-means is primarily used in unsupervised learning where there are no labels and we have $5$ labels in this classification problem, because that a particular human movement usually requires a harmonious coordination among different parts of the body, accelerometer readings would exhibit clustering properties. \\
+For each class, 5000 data examples are used to train the model, totaling $5000 \times 5 = 25000$ training examples. $30$ iterations are conducted to find the cluster centroids.
+
+
+\subsection{Model Validation}
+Although the accelerometer readings would exhibit clustering properties, due to human movements' complexity, the centroids could be close to each other and thus could cause misclassifications. Therefore it is important to validate the clustering. All training examples are now used as testing examples to check if they have been properly classified.\\
+The confusion matrix of the validation is shown below: \\
+\begin{table}[!h]
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}[<+position+>]{l|c|c|c|c|c}
+  %\backslashbox{Actual}{Predicted}
+    & Sitting & Sitting down & Standing & Standing up & Walking \\ \hline
+    Sitting & 5000 & 1883 & 0 & 482 & 286 \\
+    Sitting down & 0 & 0 & 0 & 0 & 744 \\
+    Standing & 0 & 1742 & 5000 & 1509 & 3959 \\
+    Standing up & 0 & 1367 & 0 & 2169 & 7 \\
+    Walking & 0 & 8 & 0 & 840 & 4
+  \end{tabular}
+\end{table} \\
+It can be seen that the classifications of Sitting and Standing are precise, classifications if sitting down and walking are poor while the classification of Standing up is moderate. 
+
+\subsection{Results}
+$1000$ examples in each calss different from the training examples are used to test the model. The confusion matrix of the testing is shown below: \\
+\begin{table}[!h]
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}[<+position+>]{l|c|c|c|c|c}
+  %\backslashbox{Actual}{Predicted}
+    & Sitting & Sitting down & Standing & Standing up & Walking \\ \hline
+    Sitting & 1000 & 73 & 0 & 54 & 27 \\
+    Sitting down & 0 & 0 & 0 & 2 & 95 \\
+    Standing & 0 & 340 & 1000 & 26 & 859 \\
+    Standing up & 0 & 579 & 0 & 253 & 0 \\
+    Walking & 0 & 8 & 0 & 665 & 19
+  \end{tabular}
+\end{table} \\
+It can be seen that the testing results is similar to the validation results, showing very good classifications of sitting and standing but unsatisfactory classifications of sitting down, standing up and walking. This suggests a relatively poor capability for k-means to distinguish among dynamic movements of humans.
 
 \end{document}
 
