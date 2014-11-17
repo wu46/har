@@ -1,8 +1,8 @@
-\documentclass[a4paper, 11pt]{article}
+\documentclass{cs229report}
 \usepackage{amsmath}
 \DeclareMathOperator{\argmax}{arg\,max}
 \usepackage{multicol}
-\usepackage[margin=1in]{geometry}
+%\usepackage[margin=1in]{geometry}
 
 
 \begin{document}
@@ -97,7 +97,7 @@ The confusion matrix of the results is shown below:
 \begin{table}[!h]
   \renewcommand{\arraystretch}{1.5}
   \begin{tabular}[<+position+>]{l|c|c|c|c|c}
-  %\backslashbox{Actual}{Predicted}
+    \backslashbox{Actual}{Predicted}
     & Sitting & Sitting down & Standing & Standing up & Walking \\ \hline
     Sitting & 3916 & 1126 & 0 & 22 & 0 \\
     Sitting down & 0 & 1112 & 63 & 7 & 2 \\
@@ -107,6 +107,10 @@ The confusion matrix of the results is shown below:
   \end{tabular}
 \end{table}
 
+Most of the errors come from predicting ``sitting down'' and ``standing up''
+These are both two transitional states, depending on the exact instant
+when the accelerometer readings were taken, 
+they could easily be confused with the state of ``sitting'' or ``standing''.
 
 
 %\section{Softmax Regression}
@@ -126,7 +130,7 @@ The confusion matrix of the validation is shown below: \\
 \begin{table}[!h]
   \renewcommand{\arraystretch}{1.5}
   \begin{tabular}[<+position+>]{l|c|c|c|c|c}
-  %\backslashbox{Actual}{Predicted}
+  \backslashbox{Actual}{Predicted}
     & Sitting & Sitting down & Standing & Standing up & Walking \\ \hline
     Sitting & 5000 & 1883 & 0 & 482 & 286 \\
     Sitting down & 0 & 0 & 0 & 0 & 744 \\
@@ -142,7 +146,7 @@ $1000$ examples in each calss different from the training examples are used to t
 \begin{table}[!h]
   \renewcommand{\arraystretch}{1.5}
   \begin{tabular}[<+position+>]{l|c|c|c|c|c}
-  %\backslashbox{Actual}{Predicted}
+  \backslashbox{Actual}{Predicted}
     & Sitting & Sitting down & Standing & Standing up & Walking \\ \hline
     Sitting & 1000 & 73 & 0 & 54 & 27 \\
     Sitting down & 0 & 0 & 0 & 2 & 95 \\
@@ -153,6 +157,8 @@ $1000$ examples in each calss different from the training examples are used to t
 \end{table} \\
 It can be seen that the testing results is similar to the validation results, showing very good classifications of sitting and standing but unsatisfactory classifications of sitting down, standing up and walking. This suggests a relatively poor capability for k-means to distinguish among dynamic movements of humans.
 
+\section{Next steps}
+Intuitively, among the 12 accelerometer readings, there are readings that are more relevant to human movement classifications. For examples, these 5 classes of human motions does not involve lateral movements. Thus lateral readings x1, x2, x3 and x4 are actually introduced as noises in the machine leaning perspective. They are also the most probable culprit for causing misclassifications. In the next step, these readings would be carefully scrutinized to determine their influence on the  machine learning model and the accuracy of the prediction.
 \end{document}
 
 

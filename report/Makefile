@@ -89,7 +89,7 @@ export LC_ALL		?= C
 #
 # If you list files or wildcards here, they will *not* be cleaned - default is
 # to allow everything to be cleaned.
-#neverclean		?= *.pdf
+neverclean		?= *.pdf
 #
 # Alternatively (recommended), you can add those lines to a Makefile.ini file
 # and it will get picked up automatically without your having to edit this
@@ -1202,7 +1202,8 @@ cleanable-files = $(filter-out $(wildcard $(neverclean)), $1)
 #  * files not listed in $(onlysources.$1) if it is defined
 ignore_files = \
   $(includes.$1) \
-  $(if $(onlysources.$1),$(filter-out $(onlysources.$1), $(all_files.$1)))
+  $(if $(onlysources.$1),$(filter-out $(onlysources.$1), $(all_files.$1))) \
+  milestone_template.tex
 
 # Patterns to never be allowed as source targets
 ignore_patterns	:= %._include_

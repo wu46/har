@@ -9,18 +9,58 @@
 % Summary Page
 %------------------------------------------------
 \heading{Summary}
+\bigskip
 \renewcommand{\arraystretch}{2.0}
-\begin{tabular}[]{|l|l|}
+\begin{tabular}[]{|l|p{5in}|}
   \hline
   \textbf{Name} & Huafei Wang, Jennifer Wu \\ \hline
-  \textbf{Title} & \\ \hline
-  \textbf{Predicting} & \\ \hline
-  \textbf{Data} & \\ \hline
-  \textbf{Features} & \\ \hline
-  \textbf{Models} & \\ \hline
-  \textbf{Results} & \\ \hline
-  \textbf{Future} & \\ \hline
-  \textbf{Specific Questions} & \\ \hline
+  \textbf{Title} & Classification of Human Posture and Movement\\ \hline
+  \textbf{Predicting} & We are classifying between 5 different postures and movements 
+  (sitting, sitting down, standing, standing up, walking) \\ \hline
+  \textbf{Data} & Data is publicly available on UCI's Machine Learning repository.
+  There are $165,633$ rows of data, $12$ columns of which are x,y,z accelerometer
+  readings for sensors placed at $4$ different locations on the body.\\ \hline
+  \textbf{Features} & The feature space is $12$ dimensional, consisting of x,y,z-axis 
+  readings of accelerometers of $4$ different sensors.\\ \hline
+  \textbf{Models} & We implemented a GDA model and a K-means clustering model.\\ \hline
+  \textbf{Results} & 
+  GDA: \newline
+  \renewcommand{\arraystretch}{1}
+  { \footnotesize
+    \begin{tabular}[<+position+>]{|l|c|c|c|c|c|} \hline
+      \backslashbox{Actual}{Predicted}
+      & Sitting & Sitting down & Standing & Standing up & Walking \\ \hline
+      Sitting & 3916 & 1126 & 0 & 22 & 0 \\
+      Sitting down & 0 & 1112 & 63 & 7 & 2 \\
+      Standing & 0 & 601 & 4136 & 0 & 1 \\
+      Standing up & 116 & 558 & 454 & 103 & 11 \\
+      Walking & 0 & 1257 & 900 & 48 & 2135 \\ \hline
+    \end{tabular}
+  }
+
+  K-means: \newline
+  { \footnotesize
+    \begin{tabular}[<+position+>]{|l|c|c|c|c|c|} \hline
+      \backslashbox{Actual}{Predicted}
+      & Sitting & Sitting down & Standing & Standing up & Walking \\ \hline
+      Sitting & 1000 & 73 & 0 & 54 & 27 \\
+      Sitting down & 0 & 0 & 0 & 2 & 95 \\
+      Standing & 0 & 340 & 1000 & 26 & 859 \\
+      Standing up & 0 & 579 & 0 & 253 & 0 \\
+      Walking & 0 & 8 & 0 & 665 & 19 \\ \hline
+    \end{tabular}
+  }
+
+  \\ \hline
+  \textbf{Future} & We plan to reduce the errors on the GDA model, 
+  and attempt to implement a softmax regression model.
+  Also, in these classes since there is little lateral movement,
+  lateral measurements on the sensors may actual introduce more noise.
+  We will look into this more closely and possibly eliminate some of the
+  accelerometer readings from our feature set.
+  \\ \hline
+  \textbf{Specific Questions} & Do you have any tips for general things to look for when
+  errors are large for GDA?\\ \hline
 \end{tabular}
 \end{document}
 
