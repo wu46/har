@@ -3,6 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ---- Initialize ----
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+cd '/Users/jwu/Dropbox/fall14/cs229/project'
 if ~exist('trainingdata', 'var')
     [trainingdata,classRange] = parseData;
 end
@@ -39,23 +40,40 @@ e = cell(nClasses,1);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% ---- Train GDA ----
+%% ---- GDA model ----
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for i = 1:nClasses
     model{i} = trainGDA(data, i);
-    e{i} = testGDA(data,model,i);
+%     e{i} = testGDA(data,model,i);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% ---- Test everything! ----
+% ---- Test everything! ----
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [~, confusionMatrix] = testGDAall(data,model);
+disp(confusionMatrix)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ---- Train softmax ----
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-trainSoftmax(data,100);
+[model, resid, confusionMatrix] = trainSoftmax(data,100);
+% trainSoftmaxStochastic(data);
+% confusionMatrix = softmaxTrial(data);
+% save('cm.mat', 'confusionMatrix');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Issues to address:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 1. Sitting is the same as sittingdown...??
+% 2. Rewrite to modularize function for just formatting the data
+%   e.g. X = extractTrainingData
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ---- SVM model ----
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% trainSVM(data, 1000, 1000)
+path1 = getenv('PATH');
+path1 = [path1 ':/usr/local/bin'];
+setenv('PATH', path1)
+% s = system(['./svm.sh svmTrainData_100 svmTestData_100']);
+!./svm.sh -s svmTrainData_1000 svmTestData_1000
+
