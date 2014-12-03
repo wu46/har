@@ -1,4 +1,4 @@
-function model = trainSoftmax(data, maxIt)
+function [model, resid, confusionMatrix] = trainSoftmax(data, maxIt)
 nClasses = 5;
 n = 12; % # of features = 13 (incl. a constant term)
 m = 0;
@@ -6,11 +6,12 @@ X = [];
 Y = [];
 it = 0;
 resid = [];
-portion = 1/100;
+portion = 90/100;
 range = zeros(nClasses,2); % keep track of which samples has what value
 for i = 1:nClasses
     iStart = 1;
     iEnd = round(data{i}.m*portion);
+    % iEnd = 1000;
     deltam = iEnd-iStart+1;
     X = [X;
         ones(deltam,1) ...
@@ -33,30 +34,31 @@ for i = 1:nClasses
 end
 % initialize
 theta = zeros(n+1,nClasses);
-alpha = 0.001;
+alpha = 0.005;
 
 while it < maxIt
     grad = zeros(n+1,nClasses);
     for j = 1:nClasses
         
         for i = 1:m
-%             if (Y(i) == j)
-%                 disp('positive')
-%             else
-%                 disp('neg')
-%             end
+            %             if (Y(i) == j)
+            %                 disp('positive')
+            %             else
+            %                 disp('neg')
+            %             end
             x = X(i,:)';
-%             d = ((Y(i) == j)-exp(theta(:,j)'*x)/sum(exp(theta'*x)))
+            %             d = ((Y(i) == j)-exp(theta(:,j)'*x)/sum(exp(theta'*x)))
             grad(:,j) = grad(:,j) + x*((Y(i) == j)-exp(theta(:,j)'*x)/sum(exp(theta'*x)));
-%             grad(:,j) = grad(:,j) + x*((Y(i) == j)-exp(theta(:,j)'*x)/sum(exp(theta'*x)));
+            %             grad(:,j) = grad(:,j) + x*((Y(i) == j)-exp(theta(:,j)'*x)/sum(exp(theta'*x)));
         end
     end
     % update theta
     theta = theta + alpha*1/m*grad;
     resid = [resid; sum(sum(grad.^2))];
-%     disp(sum(sum(grad.^2)))
-%     disp(theta)
+    %     disp(sum(sum(grad.^2)))
+    %     disp(theta)
     it = it + 1;
+    fprintf('iteration %d\n', it);
 end
 model = theta;
 

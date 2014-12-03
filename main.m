@@ -7,7 +7,8 @@ cd '/Users/jwu/Dropbox/fall14/cs229/project'
 if ~exist('trainingdata', 'var')
     [trainingdata,classRange] = parseData;
 end
-data = trainingdata;
+data = scaleData(trainingdata);
+% data = trainingdata;
 nClasses = 5;
 model = cell(nClasses,1);
 e = cell(nClasses,1);
@@ -42,21 +43,12 @@ e = cell(nClasses,1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ---- GDA model ----
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for i = 1:nClasses
-    model{i} = trainGDA(data, i);
-%     e{i} = testGDA(data,model,i);
-end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ---- Test everything! ----
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[~, confusionMatrix] = testGDAall(data,model);
-disp(confusionMatrix)
+[etest, etrain, cm] = runGDA(data,500,2000);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ---- Train softmax ----
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[model, resid, confusionMatrix] = trainSoftmax(data,100);
+% [model, resid, confusionMatrix] = trainSoftmax(data,100);
 % trainSoftmaxStochastic(data);
 % confusionMatrix = softmaxTrial(data);
 % save('cm.mat', 'confusionMatrix');
@@ -70,10 +62,14 @@ disp(confusionMatrix)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ---- SVM model ----
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% trainSVM(data, 1000, 1000)
+runSVM(data, 100, 100)
 path1 = getenv('PATH');
 path1 = [path1 ':/usr/local/bin'];
 setenv('PATH', path1)
 % s = system(['./svm.sh svmTrainData_100 svmTestData_100']);
-!./svm.sh -s svmTrainData_1000 svmTestData_1000
+!./svm.sh svmTrainData svmTestData
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ---- Learning curve ----
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+plotLearningCurve(data)

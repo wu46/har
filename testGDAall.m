@@ -1,7 +1,10 @@
-function [e, confusionMatrix] = testGDAall(data,model)
+function [e, confusionMatrix] = testGDAall(data,model, mtest)
 % TESTGDAALL
 % TESTGDAALL
-nClasses = 5;
+if nargin < 3
+    mtest = 1000;
+end
+nClasses = size(data,1);
 testMatrix = [];
 labels = [];
 confusionMatrix = zeros(nClasses);
@@ -9,7 +12,7 @@ e = 0;
 
 % get test matrix
 for i = 1:nClasses
-    iStart = round(data{i}.m*9/10); % take 10% of neg data
+    iStart = data{i}.m - mtest/nClasses + 1; % take 10% of neg data
     iEnd = data{i}.m;
     testMatrix = [testMatrix;
         data{i}.x1(iStart:iEnd,:) ...
@@ -44,5 +47,17 @@ for i = 1:size(testMatrix,1)
     confusionMatrix(labels(i), iclass) = confusionMatrix(labels(i),iclass) + 1;
 end
 disp('hold')
+
+% calculate precision and accuracy
+% precision: true positives / predicted positives
+% accuracy: true positives / all positives
+for j = 1:nClasses
+    precision(j) = confusionMatrix(j,j) / sum(confusionMatrix(j,:));
+    accuracy(j) = confusionMatrix(j,j) / sum(confusionMatrix(:,j));
+end
+disp('Precision')
+disp(precision)
+disp('Accuracy')
+disp(accuracy)
 
 end
