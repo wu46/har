@@ -9,8 +9,6 @@ model = trainGDA(X,Y);
 % test on training matrix
 fprintf('Testing on training set...\n')
 [prec, acc, cm, trainError] = testGDA(X,Y, model);
-disp(prec)
-disp(acc)
 disp(cm)
 
 % construct test set
@@ -20,8 +18,6 @@ iEnd = iStart + mTest/nClasses - 1;
 
 fprintf('Testing on test set...\n')
 [prec, acc, cm, testError] = testGDA(X,Y, model);
-disp(prec)
-disp(acc)
 disp(cm)
 
 
